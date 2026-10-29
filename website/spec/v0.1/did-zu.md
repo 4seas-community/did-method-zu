@@ -1,28 +1,28 @@
-# `did:zuzalu` Method Specification
+# `did:zu` Method Specification
 
 **Version:** v0.1.0 (October 2026)
 
 **Derived from:** the [`did:plc` Method Specification](https://github.com/did-method-plc/did-method-plc/blob/main/website/spec/v0.1/did-plc.md) v0.3.0 (December 2025)
 
-DID Zuzalu is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
+DID Zu is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
 
-An example DID is: `did:zuzalu:ewvi7nxzyoun6zhxrhs64oiz`
+An example DID is: `did:zu:ewvi7nxzyoun6zhxrhs64oiz`
 
-Control over a `did:zuzalu` identity rests in a set of reconfigurable rotation keys pairs. These keys can sign update operations to mutate the identity (including key rotations), with each operation referencing a prior version of the identity state by hash. Each identity starts from an initial genesis operation, and the hash of this initial object is what defines the DID itself (that is, the DID URI identifier string). A central directory server collects and validates operations, and maintains a transparent log of operations for each DID.
+Control over a `did:zu` identity rests in a set of reconfigurable rotation keys pairs. These keys can sign update operations to mutate the identity (including key rotations), with each operation referencing a prior version of the identity state by hash. Each identity starts from an initial genesis operation, and the hash of this initial object is what defines the DID itself (that is, the DID URI identifier string). A central directory server collects and validates operations, and maintains a transparent log of operations for each DID.
 
 ## Relationship to `did:plc`
 
-`did:zuzalu` is the `did:plc` method, v0.3.0, with a different method name and a different directory. The operation formats, serialization, signing, hashing, recovery rules and directory HTTP API are those of `did:plc` v0.3.0, unchanged. The only differences are:
+`did:zu` is the `did:plc` method, v0.3.0, with a different method name and a different directory. The operation formats, serialization, signing, hashing, recovery rules and directory HTTP API are those of `did:plc` v0.3.0, unchanged. The only differences are:
 
-- the method name is `zuzalu`, so identifiers are written `did:zuzalu:<identifier>`;
-- the directory is `https://plc.zuzalu.ink`. A `did:zuzalu` identifier is resolved only against this directory, never against the `did:plc` directory (`https://plc.directory`);
+- the method name is `zu`, so identifiers are written `did:zu:<identifier>`;
+- the directory is `https://plc.zuzalu.ink`. A `did:zu` identifier is resolved only against this directory, never against the `did:plc` directory (`https://plc.directory`);
 - the two methods are separate namespaces. See "Namespace Separation" under Security Considerations.
 
 Names that are part of the operation data are kept as in `did:plc`, so that operations remain byte-for-byte identical: the operation `type` values are still `plc_operation`, `plc_tombstone` and `create`.
 
 ## How it works
 
-The metadata associated with an active `did:zuzalu` identifier at any point in time is listed below. The encoding and structure differs somewhat from DID document formatting and semantics, but this information is sufficient to render a valid DID document.
+The metadata associated with an active `did:zu` identifier at any point in time is listed below. The encoding and structure differs somewhat from DID document formatting and semantics, but this information is sufficient to render a valid DID document.
 
 - `did` (string): the full DID identifier
 - `rotationKeys` (array of strings): priority-ordered list of public keys in `did:key` encoding. must include least 1 key and at most 5 keys, with no duplication. control of the DID identifier rests in these keys. not included in DID document.
@@ -42,7 +42,7 @@ Only `secp256k1` ("k256") and NIST P-256 ("p256") keys are currently supported f
 
 ### Use with AT Protocol
 
-AT Protocol accepts `did:plc` and `did:web` as account DIDs; `did:zuzalu` identifiers cannot be used as atproto account DIDs. As with `did:plc`, the entries placed in `verificationMethods`, `alsoKnownAs` and `services` are defined by the applications that use the method. The examples below keep the atproto-style entries used in the `did:plc` specification, for comparison only.
+AT Protocol accepts `did:plc` and `did:web` as account DIDs; `did:zu` identifiers cannot be used as atproto account DIDs. As with `did:plc`, the entries placed in `verificationMethods`, `alsoKnownAs` and `services` are defined by the applications that use the method. The examples below keep the atproto-style entries used in the `did:plc` specification, for comparison only.
 
 ### Operation Serialization, Signing, and Validation
 
@@ -110,24 +110,24 @@ Although `verificationMethods` signing keys can be of any key type (unlike rotat
 The DID itself is derived from the hash of the first operation in the log, called the "genesis" operation. The signed operation is encoded in DAG-CBOR; the bytes are hashed with SHA-256; the hash bytes are `base32`-encoded (not hex encoded) as a string; and that string is truncated to 24 chars to yield the "identifier" segment of the DID.
 
 In pseudo-code:
-`did:zuzalu:${base32Encode(sha256(createOp)).slice(0,24)}`
+`did:zu:${base32Encode(sha256(createOp)).slice(0,24)}`
 
-The method name is not part of the hashed bytes, so the same genesis operation yields the same 24-character identifier under `did:zuzalu` and under `did:plc`.
+The method name is not part of the hashed bytes, so the same genesis operation yields the same 24-character identifier under `did:zu` and under `did:plc`.
 
 ### Identifier Syntax
 
-The DID Zuzalu method name is `zuzalu`. The identifier part is 24 characters long, including only characters from the `base32` encoding set. An example is `did:zuzalu:yk4dd2qkboz2yv6tpubpc6co`. This means:
+The DID Zu method name is `zu`. The identifier part is 24 characters long, including only characters from the `base32` encoding set. An example is `did:zu:yk4dd2qkboz2yv6tpubpc6co`. This means:
 
-- the overall identifier length is 35 characters
+- the overall identifier length is 31 characters
 - the entire identifier is lower-case (and should be normalized to lower-case)
 - the entire identifier is ASCII, and includes only the characters `a-z`, `0-9`, and `:` (and does not even use digits `0189`)
 
 In ABNF ([RFC 5234](https://www.rfc-editor.org/rfc/rfc5234)):
 
 ```abnf
-zuzalu-did         = "did:zuzalu:" zuzalu-specific-id
-zuzalu-specific-id = 24base32-char
-base32-char        = %x61-7A / %x32-37 ; a-z, 2-7
+zu-did         = "did:zu:" zu-specific-id
+zu-specific-id = 24base32-char
+base32-char    = %x61-7A / %x32-37 ; a-z, 2-7
 ```
 
 ### Key Rotation & Account Recovery
@@ -177,7 +177,7 @@ The directory does not cross-validate `alsoKnownAs` or `service` entries in oper
 
 #### Namespace Separation
 
-Because the method name is not part of the hashed bytes, a genesis operation submitted to both the `did:plc` directory and the `did:zuzalu` directory yields the same 24-character identifier under both methods, and the two histories can diverge afterwards. `did:plc:<id>` and `did:zuzalu:<id>` are different DIDs. Software must not treat them as equivalent, and must resolve a `did:zuzalu` identifier only against the `did:zuzalu` directory.
+Because the method name is not part of the hashed bytes, a genesis operation submitted to both the `did:plc` directory and the `did:zu` directory yields the same 24-character identifier under both methods, and the two histories can diverge afterwards. `did:plc:<id>` and `did:zu:<id>` are different DIDs. Software must not treat them as equivalent, and must resolve a `did:zu` identifier only against the `did:zu` directory.
 
 #### Uniqueness
 
@@ -195,12 +195,12 @@ If "rotation" and "signing" keys are re-used across multiple accounts, it could 
 
 ### DID Creation
 
-To summarize the process of creating a new `did:zuzalu` identifier:
+To summarize the process of creating a new `did:zu` identifier:
 
 - collect values for the essential operation data fields, including generating new secure key pairs if necessary
 - construct an "unsigned" regular operation object. include a `prev` field with `null` value. do not use the deprecated/legacy operation format for new DID creations
 - serialize the "unsigned" operation with DAG-CBOR, and sign the resulting bytes with one of the initial `rotationKeys`. encode the signature as `base64url`, and use that to construct a "signed" operation object
-- serialize the "signed" operation with DAG-CBOR, take the SHA-256 hash of those bytes, and encode the hash bytes in `base32`. use the first 24 characters to generate DID value (`did:zuzalu:<hashchars>`)
+- serialize the "signed" operation with DAG-CBOR, take the SHA-256 hash of those bytes, and encode the hash bytes in `base32`. use the first 24 characters to generate DID value (`did:zu:<hashchars>`)
 - serialize the "signed" operation as simple JSON, and submit it via HTTP POST to `https://plc.zuzalu.ink/:did`
 - if the HTTP status code is successful, the DID has been registered
 
@@ -208,7 +208,7 @@ When "signing" using a "`rotationKey`", what is meant is to sign using the priva
 
 ### DID Update
 
-To summarize the process of updating a new `did:zuzalu` identifier:
+To summarize the process of updating a new `did:zu` identifier:
 
 - if the current DID state isn't known, fetch the current state from `https://plc.zuzalu.ink/:did/data`
 - if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.zuzalu.ink/:did/log/audit`, identify the most recent valid operation, and get the `cid` value. if this is a recovery operation, the relevant "valid" operation to fork from may not be the most recent in the audit log
@@ -221,7 +221,7 @@ To summarize the process of updating a new `did:zuzalu` identifier:
 
 ### DID Deactivation
 
-To summarize the process of de-activating an existing `did:zuzalu` identifier:
+To summarize the process of de-activating an existing `did:zu` identifier:
 
 - if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.zuzalu.ink/:did/log/audit`, identify the most recent valid operation, and get the `cid` value
 - construct an "unsigned" tombstone operation object. include a `prev` field with the CID (hash) of the previous valid operation
@@ -232,7 +232,7 @@ To summarize the process of de-activating an existing `did:zuzalu` identifier:
 
 ### DID Resolution
 
-`did:zuzalu` DIDs are resolved to a DID document (JSON) by making simple HTTP GET request to the directory. The resolution endpoint is: `https://plc.zuzalu.ink/:did`
+`did:zu` DIDs are resolved to a DID document (JSON) by making simple HTTP GET request to the directory. The resolution endpoint is: `https://plc.zuzalu.ink/:did`
 
 The method-specific state data (based on the most recent operation) can be fetched as a JSON object at: `https://plc.zuzalu.ink/:did/data`
 
@@ -271,7 +271,7 @@ When `after` is an integer, each JSON line has the following fields:
 
 - `type` (string): A string with fixed value `sequenced_op`.
 - `operation` (object): A valid create, update, or tombstone operation.
-- `did` (string): The corresponding `did:zuzalu:` identifier.
+- `did` (string): The corresponding `did:zu:` identifier.
 - `cid` (string): The computed CID of the `operation` value.
 - `createdAt` (string): The timestamp corresponding to when the operation was accepted by the directory, in `YYYY-MM-DDTHH:mm:ss.sssZ` format.
 - `seq` (integer): A sequence number. The returned entries have strictly monotonic sequence numbers. (See also: "Sequence Number Semantics")
@@ -281,7 +281,7 @@ The `seq` value of the final JSON line can be used as the `after` cursor value t
 For legacy compatibility reasons, when `after` is a timestamp string (in `YYYY-MM-DDTHH:mm:ss.sssZ` format), each JSON line has the following fields:
 
 - `operation` (object): A valid create, update, or tombstone operation.
-- `did` (string): The corresponding `did:zuzalu:` identifier.
+- `did` (string): The corresponding `did:zu:` identifier.
 - `cid` (string): The computed CID of the `operation` value.
 - `createdAt` (string): The timestamp corresponding to when the operation was accepted by the directory, in `YYYY-MM-DDTHH:mm:ss.sssZ` format.
 - `nullified` (boolean): Whether the directory considers this operation to have been nullified (per "Key Rotation & Account Recovery" section).
@@ -399,7 +399,7 @@ The following data:
 
 ```ts
 {
-  did: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
+  did: 'did:zu:7iza6de2dwap2sbkpav7c6c6',
   verificationMethods: {
     atproto: 'did:key:zDnaeh9v2RmcMo13Du2d6pjUf5bZwtauYxj3n9dYjw4EZUAR7'
   },
@@ -428,13 +428,13 @@ Will be presented as the following DID document:
     'https://w3id.org/security/multikey/v1',
     'https://w3id.org/security/suites/ecdsa-2019/v1'
   ],
-  id: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
+  id: 'did:zu:7iza6de2dwap2sbkpav7c6c6',
   alsoKnownAs: [ 'at://alice.test' ],
   verificationMethod: [
     {
       id: '#atproto',
       type: 'Multikey',
-      controller: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
+      controller: 'did:zu:7iza6de2dwap2sbkpav7c6c6',
       publicKeyMultibase: 'zDnaeh9v2RmcMo13Du2d6pjUf5bZwtauYxj3n9dYjw4EZUAR7'
     }
   ],
@@ -458,7 +458,7 @@ Changes to the `did:plc` specification after v0.3.0 are not automatically part o
 
 First version, derived from `did:plc` v0.3.0:
 
-- Method name `zuzalu`; directory `https://plc.zuzalu.ink`.
+- Method name `zu`; directory `https://plc.zuzalu.ink`.
 - Added "Relationship to `did:plc`" and the "Namespace Separation" consideration.
 - Split "Privacy and Security Concerns" into "Security Considerations" and "Privacy Considerations"; added notes on integrity, replay, the recovery window and uniqueness.
 - Added an ABNF for the identifier.

@@ -1,10 +1,10 @@
-# DID Zuzalu Method (did:zuzalu)
+# DID Zu Method (did:zu)
 
-`did:zuzalu` is the [`did:plc`](https://github.com/did-method-plc/did-method-plc) method, v0.3.0, under its own method name and with its own directory, `https://plc.zuzalu.ink`. The operation formats, signing, hashing, recovery rules and directory API are those of `did:plc`.
+`did:zu` is the [`did:plc`](https://github.com/did-method-plc/did-method-plc) method, v0.3.0, under its own method name and with its own directory, `https://plc.zuzalu.ink`. The operation formats, signing, hashing, recovery rules and directory API are those of `did:plc`.
 
-An example DID is: `did:zuzalu:ewvi7nxzyoun6zhxrhs64oiz`
+An example DID is: `did:zu:ewvi7nxzyoun6zhxrhs64oiz`
 
-- Specification: [website/spec/v0.1/did-zuzalu.md](website/spec/v0.1/did-zuzalu.md)
+- Specification: [website/spec/v0.1/did-zu.md](website/spec/v0.1/did-zu.md)
 - Upstream: [did-method-plc/did-method-plc](https://github.com/did-method-plc/did-method-plc), forked at commit `29f1a70`
 - Contact: ZuChiangMai
 
@@ -30,7 +30,7 @@ In 2026 the [PLC Organization](https://plcred.org) was founded to be a neutral s
 
 ## How it works
 
-See the [specification](website/spec/v0.1/did-zuzalu.md#how-it-works).
+See the [specification](website/spec/v0.1/did-zu.md#how-it-works).
 
 ## License
 
