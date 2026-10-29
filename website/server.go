@@ -29,7 +29,7 @@ var TemplateFS embed.FS
 //go:embed static/*
 var StaticFS embed.FS
 
-//go:embed spec/v0.1/did-plc.md
+//go:embed spec/v0.1/did-zuzalu.md
 var specZeroOneMarkdown []byte
 
 //go:embed spec/plc-server-openapi3.yaml
@@ -150,7 +150,7 @@ func serve(cctx *cli.Context) error {
 	e.GET("/", server.WebHome)
 	e.GET("/resolve", server.WebResolve)
 	e.GET("/did/:did", server.WebDid)
-	e.GET("/spec/v0.1/did-plc", server.WebSpecZeroOne)
+	e.GET("/spec/v0.1/did-zuzalu", server.WebSpecZeroOne)
 	e.GET("/api/redoc", server.WebRedoc)
 	e.GET("/api/plc-server-openapi3.yaml", server.WebOpenapiYaml)
 

@@ -1,16 +1,28 @@
-# `did:plc` Method Specification
+# `did:zuzalu` Method Specification
 
-**Version:** v0.3.0 (December 2025)
+**Version:** v0.1.0 (October 2026)
 
-DID PLC is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
+**Derived from:** the [`did:plc` Method Specification](https://github.com/did-method-plc/did-method-plc/blob/main/website/spec/v0.1/did-plc.md) v0.3.0 (December 2025)
 
-An example DID is: `did:plc:ewvi7nxzyoun6zhxrhs64oiz`
+DID Zuzalu is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
 
-Control over a `did:plc` identity rests in a set of reconfigurable rotation keys pairs. These keys can sign update operations to mutate the identity (including key rotations), with each operation referencing a prior version of the identity state by hash. Each identity starts from an initial genesis operation, and the hash of this initial object is what defines the DID itself (that is, the DID URI identifier string). A central directory server collects and validates operations, and maintains a transparent log of operations for each DID.
+An example DID is: `did:zuzalu:ewvi7nxzyoun6zhxrhs64oiz`
+
+Control over a `did:zuzalu` identity rests in a set of reconfigurable rotation keys pairs. These keys can sign update operations to mutate the identity (including key rotations), with each operation referencing a prior version of the identity state by hash. Each identity starts from an initial genesis operation, and the hash of this initial object is what defines the DID itself (that is, the DID URI identifier string). A central directory server collects and validates operations, and maintains a transparent log of operations for each DID.
+
+## Relationship to `did:plc`
+
+`did:zuzalu` is the `did:plc` method, v0.3.0, with a different method name and a different directory. The operation formats, serialization, signing, hashing, recovery rules and directory HTTP API are those of `did:plc` v0.3.0, unchanged. The only differences are:
+
+- the method name is `zuzalu`, so identifiers are written `did:zuzalu:<identifier>`;
+- the directory is `https://plc.zuzalu.ink`. A `did:zuzalu` identifier is resolved only against this directory, never against the `did:plc` directory (`https://plc.directory`);
+- the two methods are separate namespaces. See "Namespace Separation" under Security Considerations.
+
+Names that are part of the operation data are kept as in `did:plc`, so that operations remain byte-for-byte identical: the operation `type` values are still `plc_operation`, `plc_tombstone` and `create`.
 
 ## How it works
 
-The metadata associated with an active `did:plc` identifier at any point in time is listed below. The encoding and structure differs somewhat from DID document formatting and semantics, but this information is sufficient to render a valid DID document.
+The metadata associated with an active `did:zuzalu` identifier at any point in time is listed below. The encoding and structure differs somewhat from DID document formatting and semantics, but this information is sufficient to render a valid DID document.
 
 - `did` (string): the full DID identifier
 - `rotationKeys` (array of strings): priority-ordered list of public keys in `did:key` encoding. must include least 1 key and at most 5 keys, with no duplication. control of the DID identifier rests in these keys. not included in DID document.
@@ -20,7 +32,7 @@ The metadata associated with an active `did:plc` identifier at any point in time
 
 Every update operation to the DID identifier, including the initial creation operation (the genesis operation), contains all of the above information, except for the `did` field. The DID itself is generated from a hash of the signed genesis operation (details described below), which makes the DID entirely self-certifying. Updates after initial creation contain a pointer to the most-recent previous operation (by hash).
 
-Operations are signed and submitted to the central PLC directory server over an un-authenticated HTTP request. The PLC server validates operations against any and all existing operations on the DID (including signature validation, recovery time windows, etc), and either rejects the operation or accepts and permanently stores the operation, along with a server-generated timestamp.
+Operations are signed and submitted to the central directory server over an un-authenticated HTTP request. The directory validates operations against any and all existing operations on the DID (including signature validation, recovery time windows, etc), and either rejects the operation or accepts and permanently stores the operation, along with a server-generated timestamp.
 
 A special operation type is a "tombstone", which clears all of the data fields and permanently deactivates the DID. Note that the usual recovery time window applies to tombstone operations.
 
@@ -30,11 +42,7 @@ Only `secp256k1` ("k256") and NIST P-256 ("p256") keys are currently supported f
 
 ### Use with AT Protocol
 
-The following information should be included for use with atproto:
-
-- `verificationMethods`: an `atproto` entry with a "blessed" public key type, to be used as a signing key for authenticating updates to the account's repository. The signing key does not have any control over the DID identity unless also included in the `rotationKeys` list. Best practice is to maintain separation between rotation keys and atproto signing keys.
-- `alsoKnownAs`: should include an `at://` URI indicating a handle (hostname) for the account. Note that the handle/DID mapping needs to be validated bi-directionally (via handle resolution), and needs to be re-verified periodically
-- `services`: an `atproto_pds` entry with an `AtprotoPersonalDataServer` type and http/https URL `endpoint` indicating the account's current PDS hostname. for example, `https://pds.example.com` (no `/xrpc/` suffix needed).
+AT Protocol accepts `did:plc` and `did:web` as account DIDs; `did:zuzalu` identifiers cannot be used as atproto account DIDs. As with `did:plc`, the entries placed in `verificationMethods`, `alsoKnownAs` and `services` are defined by the applications that use the method. The examples below keep the atproto-style entries used in the `did:plc` specification, for comparison only.
 
 ### Operation Serialization, Signing, and Validation
 
@@ -66,7 +74,7 @@ There is also a deprecated legacy operation format, supported _only_ for creatio
 - `prev` (null): always include, but always with value `null`
 - `sig` (string): signature of the operation (same as above)
 
-Legacy `create` operations are stored in the PLC registry and may be returned in responses, so validating software needs to support that format. Conversion of the legacy format to "regular" operation format is relatively straight-forward, but there exist many `did:plc` identifiers where the DID identifier itself is based on the hash of the old format, so they will unfortunately be around forever.
+Legacy `create` operations exist in the history of the `did:plc` directory. The format is kept here unchanged so that the same validating software can process both methods. Conversion of the legacy format to "regular" operation format is relatively straight-forward. New DIDs must not be created with the legacy format (see "DID Creation").
 
 The process for signing and hashing operation objects is to first encode them in the DAG-CBOR binary serialization format. [DAG-CBOR](https://ipld.io/specs/codecs/dag-cbor/spec/) is a restricted subset of the Concise Binary Object Representation (CBOR), an IETF standard (RFC 8949), with semantics and value types similar to JSON.
 
@@ -102,105 +110,139 @@ Although `verificationMethods` signing keys can be of any key type (unlike rotat
 The DID itself is derived from the hash of the first operation in the log, called the "genesis" operation. The signed operation is encoded in DAG-CBOR; the bytes are hashed with SHA-256; the hash bytes are `base32`-encoded (not hex encoded) as a string; and that string is truncated to 24 chars to yield the "identifier" segment of the DID.
 
 In pseudo-code:
-`did:plc:${base32Encode(sha256(createOp)).slice(0,24)}`
+`did:zuzalu:${base32Encode(sha256(createOp)).slice(0,24)}`
+
+The method name is not part of the hashed bytes, so the same genesis operation yields the same 24-character identifier under `did:zuzalu` and under `did:plc`.
 
 ### Identifier Syntax
 
-The DID PLC method name is `plc`. The identifier part is 24 characters long, including only characters from the `base32` encoding set. An example is `did:plc:yk4dd2qkboz2yv6tpubpc6co`. This means:
+The DID Zuzalu method name is `zuzalu`. The identifier part is 24 characters long, including only characters from the `base32` encoding set. An example is `did:zuzalu:yk4dd2qkboz2yv6tpubpc6co`. This means:
 
-- the overall identifier length is 32 characters
+- the overall identifier length is 35 characters
 - the entire identifier is lower-case (and should be normalized to lower-case)
 - the entire identifier is ASCII, and includes only the characters `a-z`, `0-9`, and `:` (and does not even use digits `0189`)
+
+In ABNF ([RFC 5234](https://www.rfc-editor.org/rfc/rfc5234)):
+
+```abnf
+zuzalu-did         = "did:zuzalu:" zuzalu-specific-id
+zuzalu-specific-id = 24base32-char
+base32-char        = %x61-7A / %x32-37 ; a-z, 2-7
+```
 
 ### Key Rotation & Account Recovery
 
 Any key specified in `rotationKeys` has the ability to sign operations for the DID document.
 
-The set of rotation keys for a DID is not included in the DID document. They are an internal detail of PLC, and are stored in the operation log.
+The set of rotation keys for a DID is not included in the DID document. They are an internal detail of the method, and are stored in the operation log.
 
 Keys are listed in the `rotationKeys` field of operations in order of descending authority.
 
-The PLC server provides a 72hr window during which a higher authority rotation key can "rewrite" history, clobbering any operations (or chain of operations) signed by a lower-authority rotation key.
+The directory provides a 72hr window during which a higher authority rotation key can "rewrite" history, clobbering any operations (or chain of operations) signed by a lower-authority rotation key.
 
 To do so, that key must sign a new operation that points to the CID of the last "valid" operation - ie the fork point.
-The PLC server will accept this recovery operation as long as:
+The directory will accept this recovery operation as long as:
 
 - it is submitted within 72hrs of the to-be-invalidated operation
 - the key used for the signature has a lower index in the `rotationKeys` array than the key that signed the to-be-invalidated operation
 
-### Privacy and Security Concerns
+### Security Considerations
 
-The full history of DID operations and updates, including timestamps, is permanently publicly accessible. This is true even after DID deactivation. It is important to recognize (and communicate to account holders) that any personally identifiable information (PII) encoded in `alsoKnownAs` URIs will be publicly visible even after DID deactivation, and can not be redacted or purged.
+#### Directory Trust Model
 
-In the context of atproto, this includes the full history of handle updates and PDS locations (URLs) over time. To be explicit, it does not include any other account metadata such as email addresses or IP addresses. Handle history could potentially de-anonymize account holders if they switch handles between a known identity and an anonymous or pseudonymous identity.
-
-The PLC server does not cross-validate `alsoKnownAs` or `service` entries in operations. This means that any DID can "claim" to have any identity, or to have an active account with any service (identified by URL). This data should _not_ be trusted without bi-directionally verification, for example using handle resolution.
-
-The timestamp metadata encoded in the PLC audit log could be cross-verified against network traffic or other information to de-anonymize account holders. It also makes the "identity creation date" public.
-
-If "rotation" and "signing" keys are re-used across multiple accounts, it could reveal non-public identity details or relationships. For example, if two individuals cross-share rotation keys as a trusted backup, that information is public. If device-local recovery or signing keys are uniquely shared by two identifiers, that would indicate that those identities may actually be the same person.
-
-#### PLC Server Trust Model
-
-The PLC server has a public endpoint to receive operation objects from any client (without authentication). The server verifies operations, orders them according to recovery rules, and makes the log of operations publicly available.
+The directory has a public endpoint to receive operation objects from any client (without authentication). The directory verifies operations, orders them according to recovery rules, and makes the log of operations publicly available.
 
 The operation log is self-certifying, and contains all the information needed to construct (or verify) the the current state of the DID document.
 
-Some trust is required in the PLC server. Its attacks are limited to:
+Some trust is required in the directory. Its attacks are limited to:
 
 - Denial of service: rejecting valid operations, or refusing to serve some information about the DID
-- Misordering: In the event of a fork in DID document history, the server could choose to serve the "wrong" fork
+- Misordering: In the event of a fork in DID document history, the directory could choose to serve the "wrong" fork
+
+The directory cannot forge operations: every accepted operation must carry a valid signature from a rotation key in effect at that point in the log, which any client can check (see "Audit Logs").
+
+#### Integrity and Replay
+
+Each operation commits to its predecessor by CID (`prev`), and the signature covers `prev`. An operation therefore cannot be moved to another point in the history, or applied to another DID, without invalidating its signature. Signature encodings are checked strictly (canonical "low-S" form), so the CID of an operation cannot be changed without invalidating the signature.
+
+Operations are submitted and served over HTTPS. Because operations are self-authenticating, transport security protects the confidentiality and availability of requests rather than the integrity of the data.
+
+#### Recovery Window
+
+After the 72 hour recovery window has passed, an operation signed by a lower-authority rotation key can no longer be nullified, even if it removed higher-authority keys. Holders of higher-authority (recovery) keys need to monitor the audit log of their DID to make use of the window.
+
+#### Unverified Claims
+
+The directory does not cross-validate `alsoKnownAs` or `service` entries in operations. This means that any DID can "claim" to have any identity, or to have an active account with any service (identified by URL). This data should _not_ be trusted without bi-directional verification, for example by checking that the claimed name or service also points back to the DID.
+
+#### Namespace Separation
+
+Because the method name is not part of the hashed bytes, a genesis operation submitted to both the `did:plc` directory and the `did:zuzalu` directory yields the same 24-character identifier under both methods, and the two histories can diverge afterwards. `did:plc:<id>` and `did:zuzalu:<id>` are different DIDs. Software must not treat them as equivalent, and must resolve a `did:zuzalu` identifier only against the `did:zuzalu` directory.
+
+#### Uniqueness
+
+The identifier is the first 120 bits (24 `base32` characters) of a SHA-256 hash of the signed genesis operation. A second genesis operation with the same identifier would require a hash collision on those 120 bits.
+
+### Privacy Considerations
+
+The full history of DID operations and updates, including timestamps, is permanently publicly accessible. This is true even after DID deactivation. It is important to recognize (and communicate to account holders) that any personally identifiable information (PII) encoded in `alsoKnownAs` URIs will be publicly visible even after DID deactivation, and can not be redacted or purged.
+
+This includes the full history of `alsoKnownAs` entries and service endpoints (URLs) over time. It does not include any other account metadata such as email addresses or IP addresses. The history of names in `alsoKnownAs` could potentially de-anonymize account holders if they switch names between a known identity and an anonymous or pseudonymous identity.
+
+The timestamp metadata encoded in the audit log could be cross-verified against network traffic or other information to de-anonymize account holders. It also makes the "identity creation date" public.
+
+If "rotation" and "signing" keys are re-used across multiple accounts, it could reveal non-public identity details or relationships. For example, if two individuals cross-share rotation keys as a trusted backup, that information is public. If device-local recovery or signing keys are uniquely shared by two identifiers, that would indicate that those identities may actually be the same person.
 
 ### DID Creation
 
-To summarize the process of creating a new `did:plc` identifier:
+To summarize the process of creating a new `did:zuzalu` identifier:
 
 - collect values for the essential operation data fields, including generating new secure key pairs if necessary
 - construct an "unsigned" regular operation object. include a `prev` field with `null` value. do not use the deprecated/legacy operation format for new DID creations
 - serialize the "unsigned" operation with DAG-CBOR, and sign the resulting bytes with one of the initial `rotationKeys`. encode the signature as `base64url`, and use that to construct a "signed" operation object
-- serialize the "signed" operation with DAG-CBOR, take the SHA-256 hash of those bytes, and encode the hash bytes in `base32`. use the first 24 characters to generate DID value (`did:plc:<hashchars>`)
-- serialize the "signed" operation as simple JSON, and submit it via HTTP POST to `https://plc.directory/:did`
+- serialize the "signed" operation with DAG-CBOR, take the SHA-256 hash of those bytes, and encode the hash bytes in `base32`. use the first 24 characters to generate DID value (`did:zuzalu:<hashchars>`)
+- serialize the "signed" operation as simple JSON, and submit it via HTTP POST to `https://plc.zuzalu.ink/:did`
 - if the HTTP status code is successful, the DID has been registered
 
 When "signing" using a "`rotationKey`", what is meant is to sign using the private key associated the public key in the `rotationKey` list.
 
 ### DID Update
 
-To summarize the process of updating a new `did:plc` identifier:
+To summarize the process of updating a new `did:zuzalu` identifier:
 
-- if the current DID state isn't known, fetch the current state from `https://plc.directory/:did/data`
-- if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.directory/:did/log/audit`, identify the most recent valid operation, and get the `cid` value. if this is a recovery operation, the relevant "valid" operation to fork from may not be the most recent in the audit log
+- if the current DID state isn't known, fetch the current state from `https://plc.zuzalu.ink/:did/data`
+- if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.zuzalu.ink/:did/log/audit`, identify the most recent valid operation, and get the `cid` value. if this is a recovery operation, the relevant "valid" operation to fork from may not be the most recent in the audit log
 - collect updated values for the essential operation data fields, including generating new secure key pairs if necessary (eg, key rotation)
 - construct an "unsigned" regular operation object. include a `prev` field with the CID (hash) of the previous valid operation
 - serialize the "unsigned" operation with DAG-CBOR, and sign the resulting bytes with one of the previously-existing `rotationKeys`. encode the signature as `base64url`, and use that to construct a "signed" operation object
-- serialize the "signed" operation as simple JSON, and submit it via HTTP POST to `https://plc.directory/:did`
+- serialize the "signed" operation as simple JSON, and submit it via HTTP POST to `https://plc.zuzalu.ink/:did`
 - if the HTTP status code is successful, the DID has been updated
 - the DID update may be nullified by a "rotation" operation during the recovery window (currently 72hr)
 
 ### DID Deactivation
 
-To summarize the process of de-activating an existing `did:plc` identifier:
+To summarize the process of de-activating an existing `did:zuzalu` identifier:
 
-- if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.directory/:did/log/audit`, identify the most recent valid operation, and get the `cid` value
+- if the most recent valid DID operation CID (hash) isn't known, fetch the audit log from `https://plc.zuzalu.ink/:did/log/audit`, identify the most recent valid operation, and get the `cid` value
 - construct an "unsigned" tombstone operation object. include a `prev` field with the CID (hash) of the previous valid operation
 - serialize the "unsigned" tombstone operation with DAG-CBOR, and sign the resulting bytes with one of the previously-existing `rotationKeys`. encode the signature as `base64url`, and use that to construct a "signed" tombstone operation object
-- serialize the "signed" tombstone operation as simple JSON, and submit it via HTTP POST to `https://plc.directory/:did`
+- serialize the "signed" tombstone operation as simple JSON, and submit it via HTTP POST to `https://plc.zuzalu.ink/:did`
 - if the HTTP status code is successful, the DID has been deactivated
 - the DID deactivation may be nullified by a "rotation" operation during the recovery window (currently 72hr)
 
 ### DID Resolution
 
-PLC DIDs are resolved to a DID document (JSON) by making simple HTTP GET request to the PLC server. The resolution endpoint is: `https://plc.directory/:did`
+`did:zuzalu` DIDs are resolved to a DID document (JSON) by making simple HTTP GET request to the directory. The resolution endpoint is: `https://plc.zuzalu.ink/:did`
 
-The PLC-specific state data (based on the most recent operation) can be fetched as a JSON object at: `https://plc.directory/:did/data`
+The method-specific state data (based on the most recent operation) can be fetched as a JSON object at: `https://plc.zuzalu.ink/:did/data`
 
 ### Audit Logs
 
-As an additional check against abuse by the PLC server, and to promote resiliency, the set of all identifiers is enumerable, and the set of all operations for all identifiers (even "nullified" operations) can be enumerated and audited.
+As an additional check against abuse by the directory, and to promote resiliency, the set of all identifiers is enumerable, and the set of all operations for all identifiers (even "nullified" operations) can be enumerated and audited.
 
-The log of currently-valid operations for a given DID, as JSON, can be found at: `https://plc.directory/:did/log/audit`
+The log of currently-valid operations for a given DID, as JSON, can be found at: `https://plc.zuzalu.ink/:did/log`
 
-The audit history of a given DID (complete with timestamps and invalidated forked histories), as JSON, can be found at: `https://plc.directory/:did/log/audit`
+The audit history of a given DID (complete with timestamps and invalidated forked histories), as JSON, can be found at: `https://plc.zuzalu.ink/:did/log/audit`
 
 To fully validate a DID document against the operation log:
 
@@ -213,14 +255,14 @@ To fully validate a DID document against the operation log:
   - remove any `sig` field and serialize the "unsigned" operation with DAG-CBOR, yielding bytes
   - decode the `base64url` `sig` field to bytes
   - for each of the `rotationKeys`, attempt to verify the signature against the "unsigned" bytes
-  - if no key matches, there has been a trust violation; the PLC server should never have accepted the operation
+  - if no key matches, there has been a trust violation; the directory should never have accepted the operation
 - verify the correctness of "nullified" operations and the current active operation log using the rules around rotation keys and recovery windows
 
 ### Bulk Export
 
-The complete log of operations for all DIDs on the PLC server can be enumerated efficiently.
+The complete log of operations for all DIDs in the directory can be enumerated efficiently.
 
-The HTTP endpoint `https://plc.directory/export` returns data in [JSON lines](https://jsonlines.org/) format. It supports two query parameters:
+The HTTP endpoint `https://plc.zuzalu.ink/export` returns data in [JSON lines](https://jsonlines.org/) format. It supports two query parameters:
 
 - `count`: An integer, maximum 1000 lines per request.
 - `after`: The cursor for pagination, either an integer or a timestamp string (see below).
@@ -228,8 +270,8 @@ The HTTP endpoint `https://plc.directory/export` returns data in [JSON lines](ht
 When `after` is an integer, each JSON line has the following fields:
 
 - `type` (string): A string with fixed value `sequenced_op`.
-- `operation` (object): A valid PLC create, update, or tombstone operation.
-- `did` (string): The corresponding `did:plc:` identifier.
+- `operation` (object): A valid create, update, or tombstone operation.
+- `did` (string): The corresponding `did:zuzalu:` identifier.
 - `cid` (string): The computed CID of the `operation` value.
 - `createdAt` (string): The timestamp corresponding to when the operation was accepted by the directory, in `YYYY-MM-DDTHH:mm:ss.sssZ` format.
 - `seq` (integer): A sequence number. The returned entries have strictly monotonic sequence numbers. (See also: "Sequence Number Semantics")
@@ -238,8 +280,8 @@ The `seq` value of the final JSON line can be used as the `after` cursor value t
 
 For legacy compatibility reasons, when `after` is a timestamp string (in `YYYY-MM-DDTHH:mm:ss.sssZ` format), each JSON line has the following fields:
 
-- `operation` (object): A valid PLC create, update, or tombstone operation.
-- `did` (string): The corresponding `did:plc:` identifier.
+- `operation` (object): A valid create, update, or tombstone operation.
+- `did` (string): The corresponding `did:zuzalu:` identifier.
 - `cid` (string): The computed CID of the `operation` value.
 - `createdAt` (string): The timestamp corresponding to when the operation was accepted by the directory, in `YYYY-MM-DDTHH:mm:ss.sssZ` format.
 - `nullified` (boolean): Whether the directory considers this operation to have been nullified (per "Key Rotation & Account Recovery" section).
@@ -254,11 +296,11 @@ NOTE: Legacy responses order operations by `createdAt`, while non-legacy respons
 
 ### Export Streaming WebSocket
 
-The [WebSocket](https://datatracker.ietf.org/doc/html/rfc6455) endpoint at `wss://plc.directory/export/stream` returns a stream of JSON objects in the same format as the (non-legacy) `/export` endpoint. JSON objects are delimited by the WebSocket message framing layer (_not_ newlines).
+The [WebSocket](https://datatracker.ietf.org/doc/html/rfc6455) endpoint at `wss://plc.zuzalu.ink/export/stream` returns a stream of JSON objects in the same format as the (non-legacy) `/export` endpoint. JSON objects are delimited by the WebSocket message framing layer (_not_ newlines).
 
 When a client connects with no parameters set, the WebSocket streams newly accepted operations after the time of connection.
 
-The `cursor` parameter may be set to a previously-seen sequence number, to allow the client to "catch up" on earlier operations (starting with the first operation with greater `seq` than the passed `cursor` value). Once the client has caught up, the WebSocket will continue to stream new operations in real-time. The PLC directory may place limits on how far back the cursor value can go (see close reasons below), and in such cases clients are advised to fall back to the paginated `/export` API. A typical catch-up limit may be on the order of 7 days.
+The `cursor` parameter may be set to a previously-seen sequence number, to allow the client to "catch up" on earlier operations (starting with the first operation with greater `seq` than the passed `cursor` value). Once the client has caught up, the WebSocket will continue to stream new operations in real-time. The directory may place limits on how far back the cursor value can go (see close reasons below), and in such cases clients are advised to fall back to the paginated `/export` API. A typical catch-up limit may be on the order of 7 days.
 
 In certain error conditions, the server will close the connection with a "reason" string (as specified in [RFC-6455 Section 7.1.6](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.6)). The following close reasons are specified:
 
@@ -268,9 +310,9 @@ In certain error conditions, the server will close the connection with a "reason
 
 ### Sequence Number Semantics
 
-The PLC directory service assigns sequence numbers (`seq`) to all accepted operations. These sequence numbers should be seen as an annotation of the authenticated data (similarly to `createdAt` timestamps), and not an intrinsic property of the operations themselves. Sequence numbers are only visible in `/export*` API responses, and they exist to facilitate pagination/cursoring through these endpoints.
+The directory assigns sequence numbers (`seq`) to all accepted operations. These sequence numbers should be seen as an annotation of the authenticated data (similarly to `createdAt` timestamps), and not an intrinsic property of the operations themselves. Sequence numbers are only visible in `/export*` API responses, and they exist to facilitate pagination/cursoring through these endpoints.
 
-A PLC mirror or replica service could plausibly assign different sequence numbers to the same operations, so long as the operation ordering is internally consistent.
+A mirror or replica service could plausibly assign different sequence numbers to the same operations, so long as the operation ordering is internally consistent.
 
 ## Example
 
@@ -357,7 +399,7 @@ The following data:
 
 ```ts
 {
-  did: 'did:plc:7iza6de2dwap2sbkpav7c6c6',
+  did: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
   verificationMethods: {
     atproto: 'did:key:zDnaeh9v2RmcMo13Du2d6pjUf5bZwtauYxj3n9dYjw4EZUAR7'
   },
@@ -386,13 +428,13 @@ Will be presented as the following DID document:
     'https://w3id.org/security/multikey/v1',
     'https://w3id.org/security/suites/ecdsa-2019/v1'
   ],
-  id: 'did:plc:7iza6de2dwap2sbkpav7c6c6',
+  id: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
   alsoKnownAs: [ 'at://alice.test' ],
   verificationMethod: [
     {
       id: '#atproto',
       type: 'Multikey',
-      controller: 'did:plc:7iza6de2dwap2sbkpav7c6c6',
+      controller: 'did:zuzalu:7iza6de2dwap2sbkpav7c6c6',
       publicKeyMultibase: 'zDnaeh9v2RmcMo13Du2d6pjUf5bZwtauYxj3n9dYjw4EZUAR7'
     }
   ],
@@ -400,43 +442,41 @@ Will be presented as the following DID document:
     {
       id: '#atproto_pds',
       type: 'AtprotoPersonalDataServer',
-      serviceEndpoint: 'https://example2.com'
+      serviceEndpoint: 'https://example.test'
     }
   ]
 }
 ```
 
-## Possible Future Changes
+## Changes to `did:plc`
 
-The set of allowed ("blessed") public key cryptographic algorithms (aka, curves) may expanded over time, slowly. Likewise, support for additional blessed CID types and parameters may be expanded over time, slowly.
-
-The recovery time window may become configurable, within constraints, as part of the DID metadata itself.
-
-Support for "DID Controller Delegation" could be useful (eg, in the context of atproto PDS hosts), and may be incorporated.
-
-In the context of atproto, support for multiple handles for the same DID is being considered, with a single primary handle. But no final decision has been made yet.
-
-We welcome proposals for small additions to make `did:plc` more generic and reusable for applications other than atproto. But no promises: atproto will remain the focus for the near future.
-
-We are enthusiastic about the prospect of moving governance of the `did:plc` method, and operation of registry servers, out of the sole control of Bluesky Social PBC. Audit log snapshots, mirroring, and automated third-party auditing have all been considered as mechanisms to mitigate the centralized nature of the PLC server.
-
-The size of the `verificationMethods`, `alsoKnownAs`, and `service` mappings/arrays may be specifically constrained. And the maximum DAG-CBOR size may be constrained.
-
-As an anti-abuse mechanisms, the PLC server load balancer restricts the number of HTTP requests per time window. The limits are generous, and operating large services or scraping the operation log should not run into limits. Specific per-DID limits on operation rate may be introduced over time. For example, no more than N operations per DID per rotation key per 24 hour window.
-
-A "DID PLC history explorer" web interface would make the public nature of the DID audit log more publicly understandable.
-
-It is conceivable that longer DID PLCs, with more of the SHA-256 characters, will be supported in the future. It is also conceivable that a different hash algorithm would be allowed. Any such changes would allow existing DIDs in their existing syntax to continue being used.
+Changes to the `did:plc` specification after v0.3.0 are not automatically part of this method. Any change that is adopted is recorded in the Changelog below.
 
 ## Changelog
 
-### 2025-12-04 (v0.3.0)
+### 2026-10-29 (v0.1.0)
+
+First version, derived from `did:plc` v0.3.0:
+
+- Method name `zuzalu`; directory `https://plc.zuzalu.ink`.
+- Added "Relationship to `did:plc`" and the "Namespace Separation" consideration.
+- Split "Privacy and Security Concerns" into "Security Considerations" and "Privacy Considerations"; added notes on integrity, replay, the recovery window and uniqueness.
+- Added an ABNF for the identifier.
+- Replaced "Use with AT Protocol", since AT Protocol does not accept this method.
+- Replaced "Possible Future Changes", which described plans for `did:plc`.
+- Editorial: the log of currently-valid operations is `/:did/log` (the `did:plc` text gives `/:did/log/audit` twice); the service endpoint in the DID document example now matches its input data.
+
+### `did:plc` history
+
+The following entries are from the `did:plc` specification, up to the version this method is derived from.
+
+#### 2025-12-04 (v0.3.0)
 
 - Introduces `/export/stream` WebSocket endpoint
 
 - Existing `/export` endpoint supports using sequence numbers for pagination, with a new response format.
 
-### 2025-10-22 (v0.2.1)
+#### 2025-10-22 (v0.2.1)
 
 This update resolves ambiguities in the spec, aligning it with the existing behaviour of the reference implementation.
 
@@ -446,8 +486,12 @@ This update resolves ambiguities in the spec, aligning it with the existing beha
 
 - Remove some non-normative statements.
 
-### 2025-06-05 (v0.2)
+#### 2025-06-05 (v0.2)
 
 - `verificationMethods` keys may now use any syntactically-valid `did:key:`, regardless of key format (allowing e.g. `ed25519` keys). Rotation keys are not affected by this change, the original format constraints still apply.
 
 - A total limit of 10 `verificationMethods` (per DID) has been added.
+
+## License
+
+This specification is derived from the `did:plc` Method Specification, Copyright (c) 2022-2026 Bluesky Social PBC, and is available under the same terms: the MIT license or the Apache License, Version 2.0, at your option.

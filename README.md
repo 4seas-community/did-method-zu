@@ -1,16 +1,28 @@
-# DID PLC Method (did:plc)
+# DID Zuzalu Method (did:zuzalu)
+
+`did:zuzalu` is the [`did:plc`](https://github.com/did-method-plc/did-method-plc) method, v0.3.0, under its own method name and with its own directory, `https://plc.zuzalu.ink`. The operation formats, signing, hashing, recovery rules and directory API are those of `did:plc`.
+
+An example DID is: `did:zuzalu:ewvi7nxzyoun6zhxrhs64oiz`
+
+- Specification: [website/spec/v0.1/did-zuzalu.md](website/spec/v0.1/did-zuzalu.md)
+- Upstream: [did-method-plc/did-method-plc](https://github.com/did-method-plc/did-method-plc), forked at commit `29f1a70`
+- Contact: ZuChiangMai
+
+## Status
+
+Only the specification has been changed so far. The TypeScript library (`@did-plc/lib`), the directory server (`@did-plc/server`), the website and the OpenAPI description in this repository are still the upstream `did:plc` code and use the `did:plc:` prefix.
+
+## Upstream: DID PLC
+
+The text below is from the upstream README.
 
 DID PLC is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation. PLC stands for "Public Ledger of Credentials".
-
-An example DID is: `did:plc:ewvi7nxzyoun6zhxrhs64oiz`
-
-Control over a `did:plc` identity rests in a set of reconfigurable rotation keys pairs. These keys can sign update operations to mutate the identity (including key rotations), with each operation referencing a prior version of the identity state by hash. Each identity starts from an initial genesis operation, and the hash of this initial object is what defines the DID itself (that is, the DID URI identifier string). A central directory server collects and validates operations, and maintains a transparent log of operations for each DID.
 
 This git repository contains a TypeScript reference implementation of the method (`@did-plc/lib`) and a directory server `@did-plc/server`, both in the `package/` directory. The separate [go-didplc](https://github.com/did-method-plc/go-didplc) repository contains a Go implementation.
 
 See the [server telemetry guide](packages/server/README.md) for OpenTelemetry configuration.
 
-## Motivation
+### Motivation
 
 The DID PLC system was originally developed in 2022 by [Bluesky Social PBC](https://bsky.social/) to support [AT Protocol](https://atproto.com) (atproto). They wanted a strongly consistent, highly available, recoverable, and cryptographically secure method with fast and cheap propagation of updates. Since then over 40 million atproto account identifiers have been registered.
 
@@ -18,7 +30,7 @@ In 2026 the [PLC Organization](https://plcred.org) was founded to be a neutral s
 
 ## How it works
 
-See the [specification](website/spec/v0.1/did-plc.md#how-it-works).
+See the [specification](website/spec/v0.1/did-zuzalu.md#how-it-works).
 
 ## License
 
