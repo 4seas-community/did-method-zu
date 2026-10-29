@@ -7,7 +7,7 @@ An example DID is: `did:zu:ewvi7nxzyoun6zhxrhs64oiz`
 - Specification: [website/spec/v0.1/did-zu.md](website/spec/v0.1/did-zu.md)
 - Upstream: [did-method-plc/did-method-plc](https://github.com/did-method-plc/did-method-plc), forked at commit `29f1a70`
 - Organization: Zuzalu
-- Contact: ZuChiangMai
+- Contact: Zuzalu
 
 ## Changes from upstream
 
