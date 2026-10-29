@@ -21,14 +21,11 @@ describe('error handling', () => {
 
   describe('malformed request bodies', () => {
     it('answers a malformed JSON body with 400 and a JSON error', async () => {
-      const res = await fetch(
-        `${server.url}/did:plc:aaaaaaaaaaaaaaaaaaaaaaaa`,
-        {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: '{"not":"valid",',
-        },
-      )
+      const res = await fetch(`${server.url}/did:zu:aaaaaaaaaaaaaaaaaaaaaaaa`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: '{"not":"valid",',
+      })
 
       // The body parser rejects with a 400. Reaching the error handler before
       // the logger is installed used to make the handler itself throw, which
@@ -41,14 +38,11 @@ describe('error handling', () => {
     })
 
     it('still answers an oversized body with 413 and a JSON error', async () => {
-      const res = await fetch(
-        `${server.url}/did:plc:aaaaaaaaaaaaaaaaaaaaaaaa`,
-        {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ padding: 'x'.repeat(200 * 1024) }),
-        },
-      )
+      const res = await fetch(`${server.url}/did:zu:aaaaaaaaaaaaaaaaaaaaaaaa`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ padding: 'x'.repeat(200 * 1024) }),
+      })
 
       expect(res.status).toBe(413)
       expect(res.headers.get('content-type')).toMatch(/application\/json/)

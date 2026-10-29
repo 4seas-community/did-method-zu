@@ -13,9 +13,9 @@ Fetching account data from directory:
 ```typescript
 import * as plc from '@did-plc/lib'
 
-client = new plc.Client('https://plc.directory')
+client = new plc.Client('https://plc.zuzalu.ink')
 
-let exampleDid = 'did:plc:yk4dd2qkboz2yv6tpubpc6co'
+let exampleDid = 'did:zu:yk4dd2qkboz2yv6tpubpc6co'
 
 // current account data, in terse object format
 const data = await client.getDocumentData(exampleDid)

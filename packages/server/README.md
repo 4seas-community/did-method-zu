@@ -2,7 +2,7 @@
 
 Reference implementation of the PLC DID method, in Typescript.
 
-This is the software that runs the <https://plc.directory> service.
+This is the software that runs the did:zu directory, <https://plc.zuzalu.ink>.
 
 ## OpenTelemetry
 

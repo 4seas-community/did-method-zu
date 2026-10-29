@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "IypAT0szH_8Ygl7QrnXZrxemIcg_RkW_GyYbjih_9BEe5DRGgLxmQGeWsvB0TfDqm50c0xB8mGraOf25IA25qA",
       "prev": null,
@@ -18,7 +18,7 @@
     "createdAt": "2025-07-25T14:14:48.962Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "eabKT5-1i2MW8Z7iWXHp2tlEYn1y6HmbuHexP-fgOzQq6RuNBGlWWOjMygxl8BK98FCNU8wvX9eWkM-soBrfow",
       "prev": "bafyreiadih3ot3zecxp3yghygj2mwxh3szrrifwer2z4iodazbrtuvmmgm",
@@ -36,7 +36,7 @@
     "createdAt": "2025-07-25T14:14:49.353Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "hHkc9Mn_nE-P60GsZJG6jm6xdlBUbaxonGsir-O95P1ibH16jK-FyVO2KtF-J2llULLDZID_mbKkh2QOpBc-TA",
       "prev": "bafyreieshd5ujokbnxfzqmaoyimbdsiuwklji2st7ffga2vkhsozxn324u",
@@ -54,7 +54,7 @@
     "createdAt": "2025-07-25T14:14:49.751Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "MoCicrrAaerQdkyGeZT5QFKQ5hUbwoELlpJG1yq8e1onpuIECPlDkRn0MSTSPK8t546W8jZNvrtHRuNCBoXQUA",
       "prev": "bafyreifpq7r5ipo3rdpfrippmir5ne6he36mfab2shtz5g25tjm6z655rq",
@@ -72,7 +72,7 @@
     "createdAt": "2025-07-25T14:14:50.126Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "lD4kyQq8GZbvqaUHLt91wCBZgxeFvXQdVLM7Go0083cLE8HeG1Rj5HnsEBadYqzoCOcLgDWPMCwdAuM_GCojxA",
       "prev": "bafyreih55jjrlxemxyusbyqhwkydvew5seldzlzflhuiqhsuwienbuvxmu",
@@ -90,7 +90,7 @@
     "createdAt": "2025-07-25T14:14:50.515Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "LjSlpZATuTm28kcSAkJJmgP6_pDoq2YA5J408aQJTmVyTsDkwyJ3gKB-pcMiYKlNptD3BxdiXnIKaSP5vI6D8w",
       "prev": "bafyreih55jjrlxemxyusbyqhwkydvew5seldzlzflhuiqhsuwienbuvxmu",
@@ -108,7 +108,7 @@
     "createdAt": "2025-07-25T14:14:50.904Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "tjVslQYlmnJrZifS9TqxhH7e4YolwvI40FU_X93mFVRy85W64ClwJ_1X-eeQiNh5on0TxdqoBmPcvERocrEEPA",
       "prev": "bafyreihveyvdjaslphmjftrb6uw2ftqklefi6jod2m7lv7pw2aitu6lrqu",
@@ -126,7 +126,7 @@
     "createdAt": "2025-07-25T14:14:51.281Z"
   },
   {
-    "did": "did:plc:ana7n2ppeqk57pay7azhjs24",
+    "did": "did:zu:ana7n2ppeqk57pay7azhjs24",
     "operation": {
       "sig": "AFq-UKqZtLA88ZssGg0jV7BUm1zju4V79W4KG35VdXMB7MH9AfHvBNLOlxmzEW_ATs1tmeX60U00meDI8oppRg",
       "prev": "bafyreieshd5ujokbnxfzqmaoyimbdsiuwklji2st7ffga2vkhsozxn324u",

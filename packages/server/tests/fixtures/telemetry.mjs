@@ -17,8 +17,8 @@ const origin = `http://localhost:${address.port}`
 try {
   for (const path of [
     '/_health',
-    '/did:plc:aaaaaaaaaaaaaaaaaaaaaaaa',
-    '/did:plc:bbbbbbbbbbbbbbbbbbbbbbbb',
+    '/did:zu:aaaaaaaaaaaaaaaaaaaaaaaa',
+    '/did:zu:bbbbbbbbbbbbbbbbbbbbbbbb',
     '/telemetry/test',
   ]) {
     const response = await fetch(`${origin}${path}`)

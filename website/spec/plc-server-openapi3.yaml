@@ -1,19 +1,18 @@
 openapi: 3.0.0
 info:
-  title: 'did:plc Directory Server API'
+  title: 'did:zu Directory Server API'
   version: 0.1
   contact:
-    name: 'Protocol Team at Bluesky'
-    email: 'protocol@blueskyweb.xyz'
-    url: 'https://web.plc.directory'
+    name: 'Zuzalu'
+    url: 'https://github.com/4seas-community/did-method-zu'
   description: |
-    DID PLC is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
+    did:zu is the did:plc method (v0.3.0) under its own method name and with its own directory, operated by Zuzalu. It is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
 
     The central directory server receives and persists self-signed operation logs for each DID, starting with a "genesis operation" which defined the DID identifier itself. This document describes the HTTP API for interacting with the directory server to resolve DID Document, fetch audit logs, and submit signed operations.
 
     The HTTP API is permissionless, but only valid (correctly signed) operations are accepted. Reasonable rate-limits are applied, but they should not interfere with account recovery in most situations.
 servers:
-  - url: https://plc.directory
+  - url: https://plc.zuzalu.ink
 
 paths:
   /{did}:
@@ -41,14 +40,14 @@ paths:
         - lang: Shell
           label: curl
           source: |
-            curl -s https://plc.directory/did:plc:pyc2ihzpelxtg4cdkfzbhcv4 | jq .
+            curl -s https://plc.zuzalu.ink/did:zu:pyc2ihzpelxtg4cdkfzbhcv4 | jq .
         - lang: Python
           label: Python
           source: |
             import requests
 
-            did = "did:plc:pyc2ihzpelxtg4cdkfzbhcv4"
-            resp = requests.get(f"https://plc.directory/{did}")
+            did = "did:zu:pyc2ihzpelxtg4cdkfzbhcv4"
+            resp = requests.get(f"https://plc.zuzalu.ink/{did}")
             resp.raise_for_status()
             print(resp.json())
     post:
@@ -195,7 +194,7 @@ components:
               message:
                 type: string
             example:
-              message: 'DID not registered: did:plc:ewvi7nxzyoun6zhxrhs64oiz'
+              message: 'DID not registered: did:zu:ewvi7nxzyoun6zhxrhs64oiz'
     410DidNotAvailable:
       description: 'DID Not Available (Tombstone)'
       content:
@@ -206,7 +205,7 @@ components:
               message:
                 type: string
             example:
-              message: 'DID not available: did:plc:ewvi7nxzyoun6zhxrhs64oiz'
+              message: 'DID not available: did:zu:ewvi7nxzyoun6zhxrhs64oiz'
     400BadOperation:
       description: 'Invalid PLC Operation'
       content:
@@ -315,7 +314,7 @@ components:
 
     LegacyCreateOp:
       type: object
-      description: 'Obsolete PLC genesis operations, which must still be supported to ensure all did:plc identifiers can be resolved correctly.'
+      description: 'Obsolete PLC genesis operation format, kept so that the same validating software can process did:plc logs.'
       required:
         - type
         - signingKey
@@ -380,7 +379,7 @@ components:
           format: date-time
           description: 'Timestamp when this operation was received by the directory server'
       example:
-        did: 'did:plc:ewvi7nxzyoun6zhxrhs64oiz'
+        did: 'did:zu:ewvi7nxzyoun6zhxrhs64oiz'
         operation:
           sig: 'lza4at_jCtGo_TYgL5PC1ZNP7lhF4DV8H50LWHhvdHcB143x1wEwqZ43xvV36Pws6OOnJLJrkibEUFDFqkhIhg'
           prev: null
@@ -407,7 +406,7 @@ components:
       properties:
         id:
           type: string
-          example: 'did:plc:ewvi7nxzyoun6zhxrhs64oiz'
+          example: 'did:zu:ewvi7nxzyoun6zhxrhs64oiz'
         alsoKnownAs:
           type: array
           description: 'Ordered set (no duplicates) of aliases and names for this account, in the form of URIs'
@@ -435,7 +434,7 @@ components:
             example:
               id: '#atproto'
               type: 'EcdsaSecp256k1VerificationKey2019'
-              controller: 'did:plc:ewvi7nxzyoun6zhxrhs64oiz'
+              controller: 'did:zu:ewvi7nxzyoun6zhxrhs64oiz'
               publicKeyMultibase: 'zQYEBzXeuTM9UR3rfvNag6L3RNAs5pQZyYPsomTsgQhsxLdEgCrPTLgFna8yqCnxPpNT7DBk6Ym3dgPKNu86vt9GR'
         service:
           type: array

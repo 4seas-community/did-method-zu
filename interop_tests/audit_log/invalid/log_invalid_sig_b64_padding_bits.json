@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:3hhmazwcb2hbcjn3thxamwrk",
+    "did": "did:zu:3hhmazwcb2hbcjn3thxamwrk",
     "operation": {
       "type": "plc_operation",
       "rotationKeys": [

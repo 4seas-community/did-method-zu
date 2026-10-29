@@ -16,7 +16,7 @@ export const didForCreateOp = async (op: t.CompatibleOp) => {
   const hashOfGenesis = await sha256(cbor.encode(op))
   const hashB32 = uint8arrays.toString(hashOfGenesis, 'base32')
   const truncated = hashB32.slice(0, 24)
-  return `did:plc:${truncated}`
+  return `did:zu:${truncated}`
 }
 
 // Operations formatting

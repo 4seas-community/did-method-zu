@@ -9,10 +9,10 @@
     "did",
     "atproto"
   ],
-  "homepage": "https://web.plc.directory",
+  "homepage": "https://github.com/4seas-community/did-method-zu",
   "repository": {
     "type": "git",
-    "url": "https://github.com/did-method-plc/did-method-plc",
+    "url": "https://github.com/4seas-community/did-method-zu",
     "directory": "packages/server"
   },
   "main": "dist/index.js",

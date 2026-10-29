@@ -106,7 +106,7 @@ describe('/export/stream endpoint', () => {
     expect(receivedEvents[0].seq).toBeDefined()
     expect(receivedEvents[0].type).toBe('sequenced_op')
     expect(receivedEvents[0].operation).toBeDefined()
-    expect(receivedEvents[0].did).toMatch(/^did:plc:/)
+    expect(receivedEvents[0].did).toMatch(/^did:zu:/)
   })
 
   it('backfills from cursor', async () => {

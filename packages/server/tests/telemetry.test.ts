@@ -123,7 +123,7 @@ describe('OpenTelemetry preload', () => {
     const httpMetric = metrics.find(
       (metric) => metric.name === 'http.server.request.duration',
     )
-    expect(JSON.stringify(httpMetric)).not.toContain('did:plc:')
+    expect(JSON.stringify(httpMetric)).not.toContain('did:zu:')
     expect(httpMetric?.histogram?.dataPoints).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

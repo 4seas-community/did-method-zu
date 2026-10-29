@@ -392,22 +392,28 @@ describe('PLC server', () => {
     expect(removedOps).toEqual([res.operation]) // should return the removed op
   })
 
-  it('rejects non-PLC identifiers before querying the database', async () => {
+  it('rejects non-did:zu identifiers, including did:plc, before querying the database', async () => {
     const lastOpForDid = vi.spyOn(db, 'lastOpForDid')
     const opsForDid = vi.spyOn(db, 'opsForDid')
     const indexedOpsForDid = vi.spyOn(db, 'indexedOpsForDid')
-    const invalidDid = 'did:web:example.com'
+    // did:plc shares the identifier syntax but is a separate namespace
+    const invalidDids = [
+      'did:web:example.com',
+      'did:plc:aaaaaaaaaaaaaaaaaaaaaaaa',
+    ]
 
     try {
-      for (const path of ['', '/data', '/log', '/log/audit', '/log/last']) {
-        const res = await axios.get(`${client.url}/${invalidDid}${path}`, {
-          validateStatus: () => true,
-        })
+      for (const invalidDid of invalidDids) {
+        for (const path of ['', '/data', '/log', '/log/audit', '/log/last']) {
+          const res = await axios.get(`${client.url}/${invalidDid}${path}`, {
+            validateStatus: () => true,
+          })
 
-        expect(res.status).toEqual(400)
-        expect(res.data).toEqual({
-          message: `Resolution of non-PLC DIDs not supported: ${invalidDid}`,
-        })
+          expect(res.status).toEqual(400)
+          expect(res.data).toEqual({
+            message: `Resolution of non-did:zu DIDs not supported: ${invalidDid}`,
+          })
+        }
       }
       expect(lastOpForDid).not.toHaveBeenCalled()
       expect(opsForDid).not.toHaveBeenCalled()

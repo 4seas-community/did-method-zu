@@ -6,11 +6,15 @@ An example DID is: `did:zu:ewvi7nxzyoun6zhxrhs64oiz`
 
 - Specification: [website/spec/v0.1/did-zu.md](website/spec/v0.1/did-zu.md)
 - Upstream: [did-method-plc/did-method-plc](https://github.com/did-method-plc/did-method-plc), forked at commit `29f1a70`
+- Organization: Zuzalu
 - Contact: ZuChiangMai
 
-## Status
+## Changes from upstream
 
-Only the specification has been changed so far. The TypeScript library (`@did-plc/lib`), the directory server (`@did-plc/server`), the website and the OpenAPI description in this repository are still the upstream `did:plc` code and use the `did:plc:` prefix.
+- The specification, the TypeScript library (`@did-plc/lib`), the directory server (`@did-plc/server`), the website and the OpenAPI description use the `did:zu:` prefix and the directory `https://plc.zuzalu.ink`.
+- The directory answers `400` for any identifier that is not `did:zu`, including `did:plc` identifiers.
+- The interop test vectors in `interop_tests/` carry `did:zu:` identifiers. Only the `did` field of each entry changed; the signed operations are byte-for-byte the upstream ones.
+- Package names (`@did-plc/*`) and operation type names (`plc_operation`, `plc_tombstone`) are unchanged.
 
 ## Upstream: DID PLC
 

@@ -1,7 +1,7 @@
-`web.plc.directory`
-===================
+`did:zu` directory website
+=========================
 
-This is a basic website for the PLC directory, allowing lookup of individual DID documents. It also hosts a copy of the PLC specs.
+This is a basic website for the did:zu directory, allowing lookup of individual DID documents. It also hosts a copy of the PLC specs.
 
 ## Developer Quickstart
 

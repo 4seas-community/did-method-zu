@@ -23,7 +23,7 @@ describe('client errors', () => {
     axios.post(`${url}${path}`, body, { validateStatus: () => true })
 
   const badDid = 'did:web:example.com'
-  const unknownDid = 'did:plc:aaaaaaaaaaaaaaaaaaaaaaaa'
+  const unknownDid = 'did:zu:aaaaaaaaaaaaaaaaaaaaaaaa'
 
   const cases: Array<[string, number]> = [
     [`/${badDid}`, 400],

@@ -4,6 +4,8 @@
 
 **Derived from:** the [`did:plc` Method Specification](https://github.com/did-method-plc/did-method-plc/blob/main/website/spec/v0.1/did-plc.md) v0.3.0 (December 2025)
 
+**Maintained by:** Zuzalu
+
 DID Zu is a self-authenticating [DID](https://www.w3.org/TR/did-core/) which is strongly-consistent, recoverable, and allows for key rotation.
 
 An example DID is: `did:zu:ewvi7nxzyoun6zhxrhs64oiz`

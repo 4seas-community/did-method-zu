@@ -225,7 +225,7 @@ func (srv *Server) WebHome(c echo.Context) error {
 
 func (srv *Server) WebSpecZeroOne(c echo.Context) error {
 	data := pongo2.Context{}
-	data["html_title"] = "did:plc Specification v0.1"
+	data["html_title"] = "did:zu Specification v0.1"
 	data["markdown_html"] = string(blackfriday.Run(specZeroOneMarkdown))
 	return c.Render(http.StatusOK, "templates/markdown.html", data)
 }
@@ -259,15 +259,15 @@ func (srv *Server) WebDid(c echo.Context) error {
 	data := pongo2.Context{}
 	did := c.Param("did")
 	data["did"] = did
-	if !strings.HasPrefix(did, "did:plc:") {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("Not a valid DID PLC identifier: %s", did))
+	if !strings.HasPrefix(did, "did:zu:") {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("Not a valid did:zu identifier: %s", did))
 	}
 	res, err := ResolveDidPlc(srv.client, srv.plcHost, did)
 	if err != nil {
 		return err
 	}
 	if res.StatusCode == 404 {
-		return echo.NewHTTPError(http.StatusNotFound, fmt.Errorf("DID not in PLC directory: %s", did))
+		return echo.NewHTTPError(http.StatusNotFound, fmt.Errorf("DID not in did:zu directory: %s", did))
 	}
 	if res.StatusCode == 410 {
 		return echo.NewHTTPError(http.StatusNotFound, fmt.Errorf("DID has been permanently deleted: %s", did))

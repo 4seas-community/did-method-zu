@@ -31,14 +31,14 @@ describe('handler()', () => {
     const { res, sent } = mockRes()
     const calls: unknown[] = []
     handler(async () => {
-      throw new ServerError(400, 'Resolution of non-PLC DIDs not supported')
+      throw new ServerError(400, 'Resolution of non-did:zu DIDs not supported')
     })(mockReq(), res, (err?: unknown) => calls.push(err))
     await flush()
 
     expect(calls).toEqual([])
     expect(sent).toEqual({
       status: 400,
-      body: { message: 'Resolution of non-PLC DIDs not supported' },
+      body: { message: 'Resolution of non-did:zu DIDs not supported' },
     })
   })
 

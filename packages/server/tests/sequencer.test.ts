@@ -229,7 +229,7 @@ describe('sequencer', () => {
 
   describe('SequencerLeader', () => {
     it('assigns sequence numbers to pending events', async () => {
-      const TEST_DID = 'did:plc:testseqassignment'
+      const TEST_DID = 'did:zu:testseqassignment'
 
       // Insert an event without sequence number
       await db.db.transaction().execute(async (tx) => {
@@ -256,7 +256,7 @@ describe('sequencer', () => {
     })
 
     it('maintains strict monotonicity when assigning sequences', async () => {
-      const TEST_DID = 'did:plc:testmonotonic'
+      const TEST_DID = 'did:zu:testmonotonic'
 
       // Create multiple events in a single txn, with artificially identical timestamps
       const now = new Date()

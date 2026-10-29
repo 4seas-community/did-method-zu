@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:z72i7hdynmk6r22z27h6tvur",
+    "did": "did:zu:z72i7hdynmk6r22z27h6tvur",
     "operation": {
       "sig": "9NuYV7AqwHVTc0YuWzNV3CJafsSZWH7qCxHRUIP2xWlB-YexXC1OaYAnUayiCXLVzRQ8WBXIqF-SvZdNalwcjA",
       "prev": null,
@@ -25,7 +25,7 @@
     "createdAt": "2023-04-12T04:53:57.057Z"
   },
   {
-    "did": "did:plc:z72i7hdynmk6r22z27h6tvur",
+    "did": "did:zu:z72i7hdynmk6r22z27h6tvur",
     "operation": {
       "sig": "1mEWzRtFOgeRXH-YCSPTxb990JOXxa__n8Qw6BOKl7Ndm6OFFmwYKiiMqMCpAbxpnGjF5abfIsKc7u3a77Cbnw",
       "prev": "bafyreigp6shzy6dlcxuowwoxz7u5nemdrkad2my5zwzpwilcnhih7bw6zm",

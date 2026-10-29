@@ -100,7 +100,7 @@ describe('PLC application metrics', () => {
   it('counts validation and signature failures once by bounded reason', async () => {
     const { key, op, did } = await create()
     const update = await plc.updateHandleOp(op, key, 'metrics.example.net')
-    const unknownDid = 'did:plc:aaaaaaaaaaaaaaaaaaaaaaaa'
+    const unknownDid = 'did:zu:aaaaaaaaaaaaaaaaaaaaaaaa'
     const cases: [unknown, string][] = [
       [{ not: 'an operation' }, 'invalid_operation'],
       [{ ...update, alsoKnownAs: ['at://one', 'at://one'] }, 'invalid_alias'],
@@ -191,7 +191,7 @@ describe('PLC application metrics', () => {
   })
 
   it('excludes parser, admin, and read failures from operation rejection counts', async () => {
-    const unknownDid = 'did:plc:aaaaaaaaaaaaaaaaaaaaaaaa'
+    const unknownDid = 'did:zu:aaaaaaaaaaaaaaaaaaaaaaaa'
     const counts = async () =>
       (await collect())
         .find((m) => m.descriptor.name === 'plc.operations.rejected')

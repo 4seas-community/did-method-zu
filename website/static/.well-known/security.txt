@@ -1,3 +1,2 @@
-Contact: mailto:security@bsky.app
+Contact: https://github.com/4seas-community/did-method-zu/security/advisories/new
 Preferred-Languages: en
-Canonical: https://web.plc.directory/.well-known/security.txt

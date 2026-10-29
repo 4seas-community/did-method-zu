@@ -20,16 +20,16 @@ import {
 // the outbox, which closes them if they fall too far behind — rather than
 // buffering events in process memory without bound.
 const MAX_WS_BUFFERED_BYTES = 256 * 1024
-const PLC_DID_RE = /^did:plc:[a-z2-7]{24}$/
+const PLC_DID_RE = /^did:zu:[a-z2-7]{24}$/
 
 // Invalid DID methods are a common crawler input. Reject them before a
 // database round trip with a response that distinguishes unsupported methods
-// from unregistered PLC DIDs.
+// from unregistered did:zu DIDs.
 const assertPlcDid = (did: string): void => {
   if (!PLC_DID_RE.test(did)) {
     throw new ServerError(
       400,
-      `Resolution of non-PLC DIDs not supported: ${did}`,
+      `Resolution of non-did:zu DIDs not supported: ${did}`,
     )
   }
 }
@@ -42,7 +42,7 @@ export const createRouter = (ctx: AppContext): express.Router => {
     '/',
     handler(async function (req, res) {
       // HTTP temporary redirect to project homepage
-      res.redirect(302, 'https://web.plc.directory')
+      res.redirect(302, 'https://github.com/4seas-community/did-method-zu')
     }),
   )
 

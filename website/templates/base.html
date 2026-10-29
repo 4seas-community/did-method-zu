@@ -5,7 +5,7 @@
   <meta name="referrer" content="origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/pico.min.css">
-  <title>{%- block head_title -%}did:plc Directory{%- endblock -%}</title>
+  <title>{%- block head_title -%}did:zu Directory{%- endblock -%}</title>
   <style>
 html { position: relative; min-height: 100%; height: auto; }
 body { margin-bottom: 3em; }
@@ -63,14 +63,14 @@ main article { margin: 2.5rem 0; padding: 2rem; }
   {# <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"> #}
   {# <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"> #}
   {% block html_head_extra -%}{%- endblock %}
-  <meta name="application-name" name="DID PLC Directory">
+  <meta name="application-name" name="did:zu Directory">
   <meta name="generator" name="webplc">
 </head>
 <body>
 {%- block body_all %}
 <nav class="container-fluid">
   <ul>
-  	<li><a href="/"><strong>did:plc</strong></a></li>
+  	<li><a href="/"><strong>did:zu</strong></a></li>
   </ul>
   <ul>
   	<li><a href="/resolve" >Lookup</a> </li>
@@ -86,7 +86,7 @@ main article { margin: 2.5rem 0; padding: 2rem; }
 
 <footer class="container-fluid">
 	<div class="container">
-    <small>Developed by <a href="https://bsky.social">Bluesky Social PBC</a> for <a href="https://atproto.com">atproto</a></small>
+    <small>Operated by Zuzalu. Derived from <a href="https://github.com/did-method-plc/did-method-plc">did:plc</a>, developed by Bluesky Social PBC.</small>
   </div>
 </footer>
 {% endblock -%}

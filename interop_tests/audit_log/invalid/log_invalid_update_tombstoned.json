@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:b7y2odnrysmtzrynlrqatcpz",
+    "did": "did:zu:b7y2odnrysmtzrynlrqatcpz",
     "operation": {
       "sig": "sCbeUr9rRo3_GS3ryYFTVMMIoQCxPFqPz-hnHWS0Mk9FMOY-3oPgDMg6wOr9eWdVWxRTHB2zN6YncjaAhn3uWA",
       "prev": null,
@@ -18,7 +18,7 @@
     "createdAt": "2025-07-28T13:07:23.620Z"
   },
   {
-    "did": "did:plc:b7y2odnrysmtzrynlrqatcpz",
+    "did": "did:zu:b7y2odnrysmtzrynlrqatcpz",
     "operation": {
       "sig": "Qf7L4_fWzsKolaHiVjVBeLBcNF4ULDeUWzp2sxuyi5dYTOVzCyFGxOVGlAOKV41eUQ4wUP_q5JDly8tAnQQzMw",
       "prev": "bafyreiap6gtq3moete6modk4maeyt6ns4abftkk5lnaqb5rsyp7fwebdnu",
@@ -29,7 +29,7 @@
     "createdAt": "2025-07-28T13:07:23.993Z"
   },
   {
-    "did": "did:plc:b7y2odnrysmtzrynlrqatcpz",
+    "did": "did:zu:b7y2odnrysmtzrynlrqatcpz",
     "operation": {
       "type": "plc_operation",
       "rotationKeys": [

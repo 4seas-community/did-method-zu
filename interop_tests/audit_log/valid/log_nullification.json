@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:2s2mvm52ttz6r4hocmrq7x27",
+    "did": "did:zu:2s2mvm52ttz6r4hocmrq7x27",
     "operation": {
       "type": "plc_operation",
       "rotationKeys": [
@@ -18,7 +18,7 @@
     "createdAt": "1970-01-01T00:00:00.000Z"
   },
   {
-    "did": "did:plc:2s2mvm52ttz6r4hocmrq7x27",
+    "did": "did:zu:2s2mvm52ttz6r4hocmrq7x27",
     "operation": {
       "prev": "bafyreiguwtflhou46pupb3qtemh56x6o3fn3y7ym2q3jgoms35tdu2d5ga",
       "type": "plc_operation",
@@ -33,7 +33,7 @@
     "createdAt": "1970-01-01T00:00:01.000Z"
   },
   {
-    "did": "did:plc:2s2mvm52ttz6r4hocmrq7x27",
+    "did": "did:zu:2s2mvm52ttz6r4hocmrq7x27",
     "operation": {
       "prev": "bafyreiguwtflhou46pupb3qtemh56x6o3fn3y7ym2q3jgoms35tdu2d5ga",
       "type": "plc_operation",

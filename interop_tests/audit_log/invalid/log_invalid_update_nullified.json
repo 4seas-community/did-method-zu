@@ -1,6 +1,6 @@
 [
   {
-    "did": "did:plc:4v3qers3fn55uitqeuwokfwy",
+    "did": "did:zu:4v3qers3fn55uitqeuwokfwy",
     "operation": {
       "sig": "_h3yBs4fXKilIYIAUJpB5AoE4E_aXmGYHzm7Na5B53EmoOpDnFd6H9dg9oFvKKYwFPkQkr8HMQT32HT7vgIYuw",
       "prev": null,
@@ -18,7 +18,7 @@
     "createdAt": "2025-07-25T14:33:23.810Z"
   },
   {
-    "did": "did:plc:4v3qers3fn55uitqeuwokfwy",
+    "did": "did:zu:4v3qers3fn55uitqeuwokfwy",
     "operation": {
       "sig": "h21ooBoOMqXoHxiS_bWtgPiGPc9RF1oR7nm6C26gsQd1Kz8-aAvigfer9rvTctbOZY5o9OGw-TI5Smu3lqy5ag",
       "prev": "bafyreihfo4bemwzlppnce4bfftsrnwgtj76cku6bdtgwmf6hc7sfrt2tji",
@@ -36,7 +36,7 @@
     "createdAt": "2025-07-25T14:33:24.203Z"
   },
   {
-    "did": "did:plc:4v3qers3fn55uitqeuwokfwy",
+    "did": "did:zu:4v3qers3fn55uitqeuwokfwy",
     "operation": {
       "sig": "jQN_ksPQqr3slUyALtQnNDbg7b6jagOOI127aId3kQcKEyJeSwNraCgecIz2K1jO0NfFcVguVHmC9zKSGrXv-Q",
       "prev": "bafyreieekauxgid3iwwfa5ywmzk62ccka66d777nz6hsdnbjgas36ikh6i",
@@ -54,7 +54,7 @@
     "createdAt": "2025-07-25T14:33:24.589Z"
   },
   {
-    "did": "did:plc:4v3qers3fn55uitqeuwokfwy",
+    "did": "did:zu:4v3qers3fn55uitqeuwokfwy",
     "operation": {
       "sig": "M0bV7tNe6YkQ55NX12p_2GXveNOiqcoffSIbT-r5Zp5ZYHvje3GAHh4YRtuVPKboqmO3yL7D5CseWYBiKrpcbA",
       "prev": "bafyreieekauxgid3iwwfa5ywmzk62ccka66d777nz6hsdnbjgas36ikh6i",
@@ -72,7 +72,7 @@
     "createdAt": "2025-07-25T14:33:24.967Z"
   },
   {
-    "did": "did:plc:4v3qers3fn55uitqeuwokfwy",
+    "did": "did:zu:4v3qers3fn55uitqeuwokfwy",
     "operation": {
       "type": "plc_operation",
       "rotationKeys": [
