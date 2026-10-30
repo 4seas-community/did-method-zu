@@ -42,7 +42,7 @@ export const createRouter = (ctx: AppContext): express.Router => {
     '/',
     handler(async function (req, res) {
       // HTTP temporary redirect to project homepage
-      res.redirect(302, 'https://github.com/4seas-community/did-method-zu')
+      res.redirect(302, 'https://explorer.zuzalu.ink')
     }),
   )
 
